@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -25,15 +27,21 @@ public class Bloc extends java.awt.Frame {
     private void initComponents() {
 
         label1 = new java.awt.Label();
+        jButton1 = new javax.swing.JButton();
         textArea1 = new java.awt.TextArea();
         menuBar1 = new java.awt.MenuBar();
         menu1 = new java.awt.Menu();
         menuItem1 = new java.awt.MenuItem();
         menuItem2 = new java.awt.MenuItem();
         menuItem3 = new java.awt.MenuItem();
+        menuItem5 = new java.awt.MenuItem();
         menuItem4 = new java.awt.MenuItem();
+        analizar = new java.awt.Menu();
+        iniciar = new java.awt.MenuItem();
 
         label1.setText("label1");
+
+        jButton1.setText("jButton1");
 
         setBackground(new java.awt.Color(204, 204, 255));
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
@@ -78,13 +86,7 @@ public class Bloc extends java.awt.Frame {
         });
         menu1.add(menuItem3);
 
-	menuItem5.setLabel("Guardar como...");
-        menuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItem3ActionPerformed(evt);
-            }
-        });
-
+        menuItem5.setLabel("Guardar como...");
         menu1.add(menuItem5);
 
         menuItem4.setLabel("Salir");
@@ -96,6 +98,23 @@ public class Bloc extends java.awt.Frame {
         menu1.add(menuItem4);
 
         menuBar1.add(menu1);
+
+        analizar.setLabel("Analizar");
+        analizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                analizarActionPerformed(evt);
+            }
+        });
+
+        iniciar.setLabel("Iniciar");
+        iniciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                iniciarActionPerformed(evt);
+            }
+        });
+        analizar.add(iniciar);
+
+        menuBar1.add(analizar);
 
         setMenuBar(menuBar1);
 
@@ -213,6 +232,16 @@ public class Bloc extends java.awt.Frame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
 
+    private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_analizarActionPerformed
+
+    private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
+        String cadena = textArea1.getText();
+        
+        Analizar(cadena);
+    }//GEN-LAST:event_iniciarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -227,6 +256,9 @@ public class Bloc extends java.awt.Frame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Menu analizar;
+    private java.awt.MenuItem iniciar;
+    private javax.swing.JButton jButton1;
     private java.awt.Label label1;
     private java.awt.Menu menu1;
     private java.awt.MenuBar menuBar1;
@@ -234,6 +266,7 @@ public class Bloc extends java.awt.Frame {
     private java.awt.MenuItem menuItem2;
     private java.awt.MenuItem menuItem3;
     private java.awt.MenuItem menuItem4;
+    private java.awt.MenuItem menuItem5;
     private java.awt.TextArea textArea1;
     // End of variables declaration//GEN-END:variables
 
@@ -299,9 +332,42 @@ public class Bloc extends java.awt.Frame {
          salida.write(this.textArea1.getText());
          salida.close();
          }catch (IOException ex) {
-         JOptionPane.showMessageDialog(null, "Error en El Archivo", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error en El Archivo", "Error", JOptionPane.ERROR_MESSAGE);
          }
      }
+ }
+ 
+ public void Analizar(String cadena) {
+    String[][] m = {{"s0","s1","s2","s3"},{"0","1"},{"s0"},{"s0","s3"}};
+    String[][] flujo = {{"s0","0","s0"},{"s0","1","s1"},{"s1","0","s3"},{"s1","1","s2"},
+    {"s2","0","s3"},{"s2","1","s0"},{"s3","0","s0"},{"s3","1","s2"}};
+    ArrayList<String[]> estado = new ArrayList<>();
+    
+    String[] inicial = {"",(m[2][0])};
+    estado.add(inicial);
+    
+    for(int i = 0; i < cadena.length(); i++){
+        char l = cadena.charAt(i);
+        for(int j = 0; j < flujo.length; j++) {
+            if(flujo[j][0].equals(inicial[1]) && flujo[j][1].equals(String.valueOf(l))) {                
+                String siguiente = flujo[j][2];
+                String[] update = {String.valueOf(l),siguiente};
+                inicial = update;
+                estado.add(inicial);
+                break;
+            }
+        }
+    }
+    
+    for(String[] e : estado) {
+        System.out.println(Arrays.toString(e));
+    }
+        
+    if(inicial[1].equals(m[3][0]) || inicial[1].equals(m[3][1])) {
+        System.out.println("Cadena aceptada");           
+    } else {
+        System.out.println("Cadena rechazada");
+    }
  }
 
 }

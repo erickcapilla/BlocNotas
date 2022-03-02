@@ -13,14 +13,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Bloc extends java.awt.Frame {
-
+    
+    DefaultTableModel model = new DefaultTableModel();
+    int id = 1;
+    
     /**
      * Creates new form Bloc1
      */
     public Bloc() {
         initComponents();
+        this.setBounds(0, 0, 750, 500);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        
+        model.addColumn("ID");
+        model.addColumn("Cadena");
+        model.addColumn("Estado");
+        model.addColumn("Final");
+        
+        this.TEstado.setModel(model);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -29,6 +43,8 @@ public class Bloc extends java.awt.Frame {
         label1 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
         textArea1 = new java.awt.TextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TEstado = new javax.swing.JTable();
         menuBar1 = new java.awt.MenuBar();
         menu1 = new java.awt.Menu();
         menuItem1 = new java.awt.MenuItem();
@@ -43,7 +59,8 @@ public class Bloc extends java.awt.Frame {
 
         jButton1.setText("jButton1");
 
-        setBackground(new java.awt.Color(204, 204, 255));
+        setAutoRequestFocus(false);
+        setBackground(new java.awt.Color(255, 255, 255));
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         setTitle("Bloc de notas-Juan Dotor/Erick Capilla");
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -54,6 +71,19 @@ public class Bloc extends java.awt.Frame {
                 formWindowOpened(evt);
             }
         });
+
+        TEstado.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Cadena", "Estado", "Final"
+            }
+        ));
+        jScrollPane1.setViewportView(TEstado);
 
         menu1.setLabel("Archivo");
         menu1.addActionListener(new java.awt.event.ActionListener() {
@@ -123,10 +153,14 @@ public class Bloc extends java.awt.Frame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(textArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -238,8 +272,60 @@ public class Bloc extends java.awt.Frame {
 
     private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
         String cadena = textArea1.getText();
+        String[] noAceptado = {"2", "3", "4", "5", "6", "7", "8", "9",
+        "a","b","c","d",""};
         
-        Analizar(cadena);
+        boolean error = false;
+
+        /*for(int i = 0; i < cadena.length(); i++){
+            char l = cadena.charAt(i);
+            if(cadena.contains("1") || cadena.contains("0")) {
+                System.out.println(":" + l);
+                System.out.println(i);
+                error = true;
+                break;
+            }
+        }*/
+        
+        /*for(int i = 0; i < noAceptado.length; i++){
+            String l = noAceptado[i];
+            if(cadena.contains(l)) {
+                error = true;
+                break;
+            }
+        }
+        
+        if(cadena.contains("2") || cadena.contains("3") || cadena.contains("4") ||
+                cadena.contains("5") || cadena.contains("6") || cadena.contains("7")
+                || cadena.contains("8") || cadena.contains("9")) {
+            error = true;
+        }*/
+        
+        for(int i = 0; i <= 47; i++){
+            String l = Character.toString((char) i);
+            System.out.println(i + ": " + l);
+            if(cadena.contains(l)) {
+                error = true;
+                break;
+            }
+        }
+        
+        for(int i = 50; i <= 127; i++){
+            String l = Character.toString((char) i);
+            if(cadena.contains(l)) {
+                error = true;
+                break;
+            }
+        }
+        
+        
+        if(!error) {
+            Analizar(cadena);
+        } else {
+            JOptionPane.showMessageDialog(null, "La cadena solo debe ser de 0 y 1");
+        }
+       
+        
     }//GEN-LAST:event_iniciarActionPerformed
 
     /**
@@ -256,9 +342,11 @@ public class Bloc extends java.awt.Frame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TEstado;
     private java.awt.Menu analizar;
     private java.awt.MenuItem iniciar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Label label1;
     private java.awt.Menu menu1;
     private java.awt.MenuBar menuBar1;
@@ -346,28 +434,58 @@ public class Bloc extends java.awt.Frame {
     String[] inicial = {"",(m[2][0])};
     estado.add(inicial);
     
-    for(int i = 0; i < cadena.length(); i++){
-        char l = cadena.charAt(i);
-        for(int j = 0; j < flujo.length; j++) {
-            if(flujo[j][0].equals(inicial[1]) && flujo[j][1].equals(String.valueOf(l))) {                
-                String siguiente = flujo[j][2];
-                String[] update = {String.valueOf(l),siguiente};
-                inicial = update;
-                estado.add(inicial);
+        for(int i = 0; i < cadena.length(); i++){
+            char l = cadena.charAt(i);
+            for(int j = 0; j < flujo.length; j++) {
+                if(flujo[j][0].equals(inicial[1]) && flujo[j][1].equals(String.valueOf(l))) {                
+                    String siguiente = flujo[j][2];
+                    String[] update = {String.valueOf(l),siguiente};
+                    inicial = update;
+                    estado.add(inicial);
+                    break;
+                }
+            }
+        }
+        
+        for(String[] e : estado) {
+            System.out.println(Arrays.toString(e));
+        }
+
+        String es = "";
+
+        for(int i = 0; i < m[3].length; i++) {
+            if(inicial[1].equals(m[3][0]) || inicial[1].equals(m[3][1])) {
+                es = "Aceptada";
+                System.out.println("Cadena aceptada");
+            } else {
+                es = "Rechazada";
+                System.out.println("Cadena rechazada");
+            }
+            if(es != "") {
                 break;
             }
         }
-    }
-    
-    for(String[] e : estado) {
-        System.out.println(Arrays.toString(e));
-    }
-        
-    if(inicial[1].equals(m[3][0]) || inicial[1].equals(m[3][1])) {
-        System.out.println("Cadena aceptada");           
-    } else {
-        System.out.println("Cadena rechazada");
-    }
+        /*if(inicial[1].equals(m[3][0]) || inicial[1].equals(m[3][1])) {
+            es = "Aceptada";
+                System.out.println("Cadena aceptada");
+        }*/
+
+        String[] fila = new String[4];
+
+        fila[0] = String.valueOf(id);  
+        fila[1] = cadena;
+        fila[2] = es;
+        fila[3] = inicial[1];
+
+        model.addRow(fila);
+
+        String txt = "La cadena " + cadena + " ha sido " + es;
+
+        JOptionPane.showMessageDialog(null, txt);
+        id++;
+    /*} else {
+        JOptionPane.showMessageDialog(null, "La cadena debe ser de 0 y 1");
+    }*/
  }
 
 }

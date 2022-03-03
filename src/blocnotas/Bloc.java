@@ -54,6 +54,8 @@ public class Bloc extends java.awt.Frame {
         menuItem4 = new java.awt.MenuItem();
         analizar = new java.awt.Menu();
         iniciar = new java.awt.MenuItem();
+        modificar = new java.awt.Menu();
+        editar = new java.awt.MenuItem();
 
         label1.setText("label1");
 
@@ -146,20 +148,27 @@ public class Bloc extends java.awt.Frame {
 
         menuBar1.add(analizar);
 
+        modificar.setLabel("Modificar");
+
+        editar.setLabel("Editar");
+        modificar.add(editar);
+
+        menuBar1.add(modificar);
+
         setMenuBar(menuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+            .addComponent(textArea1, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(textArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -272,38 +281,11 @@ public class Bloc extends java.awt.Frame {
 
     private void iniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iniciarActionPerformed
         String cadena = textArea1.getText();
-        String[] noAceptado = {"2", "3", "4", "5", "6", "7", "8", "9",
-        "a","b","c","d",""};
         
         boolean error = false;
-
-        /*for(int i = 0; i < cadena.length(); i++){
-            char l = cadena.charAt(i);
-            if(cadena.contains("1") || cadena.contains("0")) {
-                System.out.println(":" + l);
-                System.out.println(i);
-                error = true;
-                break;
-            }
-        }*/
-        
-        /*for(int i = 0; i < noAceptado.length; i++){
-            String l = noAceptado[i];
-            if(cadena.contains(l)) {
-                error = true;
-                break;
-            }
-        }
-        
-        if(cadena.contains("2") || cadena.contains("3") || cadena.contains("4") ||
-                cadena.contains("5") || cadena.contains("6") || cadena.contains("7")
-                || cadena.contains("8") || cadena.contains("9")) {
-            error = true;
-        }*/
         
         for(int i = 0; i <= 47; i++){
             String l = Character.toString((char) i);
-            System.out.println(i + ": " + l);
             if(cadena.contains(l)) {
                 error = true;
                 break;
@@ -344,6 +326,7 @@ public class Bloc extends java.awt.Frame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TEstado;
     private java.awt.Menu analizar;
+    private java.awt.MenuItem editar;
     private java.awt.MenuItem iniciar;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -355,6 +338,7 @@ public class Bloc extends java.awt.Frame {
     private java.awt.MenuItem menuItem3;
     private java.awt.MenuItem menuItem4;
     private java.awt.MenuItem menuItem5;
+    private java.awt.Menu modificar;
     private java.awt.TextArea textArea1;
     // End of variables declaration//GEN-END:variables
 
@@ -446,29 +430,19 @@ public class Bloc extends java.awt.Frame {
                 }
             }
         }
-        
-        for(String[] e : estado) {
-            System.out.println(Arrays.toString(e));
-        }
 
         String es = "";
 
         for(int i = 0; i < m[3].length; i++) {
             if(inicial[1].equals(m[3][0]) || inicial[1].equals(m[3][1])) {
                 es = "Aceptada";
-                System.out.println("Cadena aceptada");
             } else {
                 es = "Rechazada";
-                System.out.println("Cadena rechazada");
             }
             if(es != "") {
                 break;
             }
         }
-        /*if(inicial[1].equals(m[3][0]) || inicial[1].equals(m[3][1])) {
-            es = "Aceptada";
-                System.out.println("Cadena aceptada");
-        }*/
 
         String[] fila = new String[4];
 
@@ -483,9 +457,6 @@ public class Bloc extends java.awt.Frame {
 
         JOptionPane.showMessageDialog(null, txt);
         id++;
-    /*} else {
-        JOptionPane.showMessageDialog(null, "La cadena debe ser de 0 y 1");
-    }*/
  }
 
 }
